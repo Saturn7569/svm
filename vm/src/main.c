@@ -1,31 +1,40 @@
 #include <stdio.h>
+#include <inttypes.h>
 
 #include "stack.h"
+#include "vm.h"
+#include "utils.h"
 
 int main() {
-    struct Stack test;
+    VM vm;
+    uint8_t example[] = {
+        0x10, 0x00, 0x00, 0x00, 0x05, // ICONST 0x5
+        0xF0, // DPRINT
+    };
 
-    if (Stack_init(&test, 8) != 0) {
-        perror("Failed to initialize the stack");
-        return 1;
+    VM_init(&vm, example, 6);
+
+    while (vm.vmRunning > 0) {
+        switch (VM_next(&vm)) {
+            case 0:
+                break;
+            case ERR_VM_EOF:
+                vm.vmRunning = 0;
+                break;
+            case ERR_INVALID_OPCODE:
+                puts("Invalid opcode reached");
+                break;
+            case ERR_INVALID_OPERANDS:
+                puts("Invalid operands parsed");
+                break;
+            case ERR_OPCODE_EXEC:
+                puts("Error while executing opcodes");
+                break;
+            default:
+                puts("An error occured.");
+                break;
+        }
     }
-
-    if (Stack_push(&test, 5) != 0) {
-        perror("Failed to push the number to the stack");
-        Stack_destroy(&test);
-        return 1;
-    }
-    if (Stack_push(&test, 69) != 0) {
-        perror("Failed to push the number to the stack");
-        Stack_destroy(&test);
-        return 1;
-    }
-
-    printf("Number on the stack: %d\n", Stack_pop(&test));
-
-    printf("Duplicated value: %d\n", Stack_dup(&test));
-
-    Stack_destroy(&test);
 
     return 0;
 }
