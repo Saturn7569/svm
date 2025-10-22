@@ -1,0 +1,6 @@
+# Test files
+*.svm
+*.bin
+
+# Build files
+*.exe

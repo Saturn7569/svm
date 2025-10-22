@@ -1,0 +1,34 @@
+=== BYTECODE REPR ===
+
+== Opcodes ==
+
+0x00 -> NOP
+0x01 -> POP
+0x02 -> DUP
+
+0x10 -> ICONST <val (4 bytes little-endian)>
+
+0x20 -> MVAR
+0x21 -> STORE <addr (4 bytes little-endian)>
+0x22 -> LOAD <addr (4 bytes little-endian)>
+
+0x30 -> ADD
+0x31 -> SUB
+0x32 -> MUL
+0x33 -> DIV
+0x34 -> MOD
+
+0x40 -> JMP <addr (4 bytes little-endian)>
+0x41 -> JZ <addr (4 bytes little-endian)>
+0x42 -> JNZ <addr (4 bytes little-endian)>
+0x43 -> CALL <addr (4 bytes little-endian)> <n_args (2 bytes little-endian)>
+0x44 -> RET
+
+0x50 -> EQ
+0x51 -> NEQ
+0x52 -> LT
+0x53 -> GT
+0x54 -> GTE
+0x55 -> LTE
+
+0x60 -> HLT
