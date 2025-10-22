@@ -54,7 +54,7 @@ static uint16_t read_u16(VM* vm) {
         return 0;
     }
 
-    uint16_t val = vm->code[vm->pc] | (vm->code[vm->pc + 1] << 8);
+    uint16_t val = vm->code[vm->pc + 1] | (vm->code[vm->pc + 2] << 8);
 
     vm->pc += 2;
 
@@ -67,7 +67,7 @@ static uint32_t read_u32(VM* vm) {
         return 0;
     }
 
-    uint16_t val = vm->code[vm->pc] | (vm->code[vm->pc + 1] << 8) | (vm->code[vm->pc + 1] << 16) | (vm->code[vm->pc + 1] << 24);
+    uint32_t val = vm->code[vm->pc + 1] | (vm->code[vm->pc + 2] << 8) | (vm->code[vm->pc + 3] << 16) | (vm->code[vm->pc + 4] << 24);
 
     vm->pc += 4;
 

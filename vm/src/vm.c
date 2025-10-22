@@ -63,7 +63,7 @@ uint32_t VM_next(VM* vm) {
 
         case DPRINT: {
             if (vm->stack.ptr > 0) {
-                printf("Stack value at %d: %d\n", vm->stack.ptr, vm->stack.stack[vm->stack.ptr - 1]);
+                printf("Stack value at %d: %d (%#x)\n", vm->stack.ptr, vm->stack.stack[vm->stack.ptr - 1], vm->stack.stack[vm->stack.ptr - 1]);
             } else {
                 puts("SP is 0");
             }
