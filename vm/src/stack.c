@@ -51,3 +51,17 @@ long Stack_pop(struct Stack* st) {
 
     return (long)st->stack[st->ptr];
 }
+
+long Stack_dup(struct Stack* st) {
+    if (st->ptr == 0) {
+        return -1;
+    }
+
+    uint val = st->stack[st->ptr - 1];
+
+    if (Stack_push(st, val) != 0) {
+        return -1;
+    }
+
+    return val;
+}

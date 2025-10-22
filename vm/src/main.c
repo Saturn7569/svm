@@ -23,6 +23,8 @@ int main() {
 
     printf("Number on the stack: %d\n", Stack_pop(&test));
 
+    printf("Duplicated value: %d\n", Stack_dup(&test));
+
     Stack_destroy(&test);
 
     return 0;
