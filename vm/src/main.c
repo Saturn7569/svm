@@ -10,9 +10,15 @@ int main() {
     uint8_t example[] = {
         0x10, 0x05, 0x00, 0x00, 0x00, // ICONST 0x5
         0xF0, // DPRINT
+        0x10, 0x43, 0x00, 0x00, 0x00, // ICONST 0x43 (6 7)
+        0xF0, // DPRINT
+        0x01, // POP
+        0xF0, // DPRINT
+        0x02,
+        0xF0, // DPRINT
     };
 
-    VM_init(&vm, example, 6);
+    VM_init(&vm, example, 16);
 
     while (vm.vmRunning > 0) {
         switch (VM_next(&vm)) {

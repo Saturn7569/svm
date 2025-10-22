@@ -23,7 +23,7 @@ uint32_t VM_next(VM* vm) {
     }
 
     Opcode o = vm->code[vm->pc];
-    printf("PC: %d\tO: %#x\n", vm->pc, o);
+    printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
     switch (o) {
         case NOP:
             vm->pc++;
