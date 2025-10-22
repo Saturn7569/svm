@@ -13,11 +13,12 @@ struct Stack {
     uint* stack;
 };
 
-const uint Stack_init(struct Stack*, size_t);
+uint Stack_init(struct Stack*, size_t);
+void Stack_destroy(struct Stack*);
 
-const uint Stack_push(struct Stack*, uint);
-const long Stack_pop(struct Stack*);
+uint Stack_push(struct Stack*, uint);
+long Stack_pop(struct Stack*);
 
-const long Stack_dup(struct Stack*);
+long Stack_dup(struct Stack*);
 
 #endif

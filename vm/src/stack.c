@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-const uint Stack_init(struct Stack* st, size_t mal_elements) {
+uint Stack_init(struct Stack* st, size_t mal_elements) {
     if (mal_elements < 1)
         return 1;
 
@@ -22,7 +22,11 @@ const uint Stack_init(struct Stack* st, size_t mal_elements) {
     return 0;
 }
 
-const uint Stack_push(struct Stack* st, uint val) {
+void Stack_destroy(struct Stack* st) {
+    free(st->stack);
+}
+
+uint Stack_push(struct Stack* st, uint val) {
     if (st->STACK_SIZE <= st->ptr) {
         st->STACK_SIZE *= 2;
 
@@ -36,4 +40,14 @@ const uint Stack_push(struct Stack* st, uint val) {
     st->ptr++;
 
     return 0;
+}
+
+long Stack_pop(struct Stack* st) {
+    if (st->ptr == 0) {
+        return -1;
+    }
+
+    st->ptr--;
+
+    return (long)st->stack[st->ptr];
 }
