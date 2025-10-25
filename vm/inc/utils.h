@@ -9,6 +9,7 @@
 #include <inttypes.h>
 
 #include "vm.h"
+#include "stack.h"
 
 typedef enum {
 
@@ -73,6 +74,27 @@ static uint32_t read_u32(VM* vm) {
     vm->pc += 4;
 
     return val;
+}
+
+static uint32_t* pop_ab(VM* vm) {
+    static uint ab[2];
+    long temp;
+
+    temp = Stack_pop(&vm->stack);
+    if (temp < 0) {
+        vm->errorLevel = 2;
+        return ab;
+    }
+    ab[1] = (uint)temp;
+
+    temp = Stack_pop(&vm->stack);
+    if (temp < 0) {
+        vm->errorLevel = 2;
+        return ab;
+    }
+    ab[0] = (uint)temp;
+
+    return ab;
 }
 
 #endif
