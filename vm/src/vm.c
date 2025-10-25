@@ -23,7 +23,9 @@ uint32_t VM_next(VM* vm) {
     }
 
     Opcode o = vm->code[vm->pc];
-    printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
+    //printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
+
+    // Yandere sim moment
     switch (o) {
         case NOP:
             vm->pc++;
