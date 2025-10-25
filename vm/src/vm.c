@@ -23,7 +23,7 @@ uint32_t VM_next(VM* vm) {
     }
 
     Opcode o = vm->code[vm->pc];
-    printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
+    //printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
     switch (o) {
         case NOP:
             vm->pc++;
@@ -68,6 +68,19 @@ uint32_t VM_next(VM* vm) {
                 puts("SP is 0");
             }
             vm->pc++;
+            break;
+        }
+
+        case DCHAR: {
+            if (vm->stack.ptr > 0) {
+                printf("%c", vm->stack.stack[vm->stack.ptr - 1]);
+            }
+            vm->pc++;
+            break;
+        }
+
+        case HLT: {
+            vm->vmRunning = 0;
             break;
         }
 

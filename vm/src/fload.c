@@ -7,47 +7,33 @@
 
 struct Program loadFile(FILE* f) {
     char buf[F_READ_BUFSIZE];
-
     size_t codeSize = 0;
-
     size_t codeBufSize = F_READ_BUFSIZE;
-    uint8_t* code = (uint8_t*)malloc(codeBufSize);
-    if (!code) {
-        return (struct Program){
-            (uint8_t*)NULL,
-            (size_t)0,
-        };
-    }
-
-    size_t bytesRead;
-    size_t totalByteSize;
+    uint8_t* code = malloc(codeBufSize);
+    if (!code)
+        return (struct Program){ NULL, 0 };
 
     for (;;) {
-        bytesRead = fread(buf, 1, F_READ_BUFSIZE, f);
-        if (bytesRead == 0) {
-            // EOF
+        size_t bytesRead = fread(buf, 1, F_READ_BUFSIZE, f);
+        if (bytesRead == 0)
             break;
-        }
 
-        totalByteSize = codeSize + bytesRead;
+        size_t totalByteSize = codeSize + bytesRead;
         if (totalByteSize > codeBufSize) {
-            codeBufSize += F_READ_BUFSIZE;
-            code = (uint8_t*)realloc(code, codeBufSize);
-            if (!code) {
-                return (struct Program){
-                    (uint8_t*)NULL,
-                    (size_t)0,
-                };
+            while (totalByteSize > codeBufSize)
+                codeBufSize *= 2;
+
+            uint8_t* tmp = realloc(code, codeBufSize);
+            if (!tmp) {
+                free(code);
+                return (struct Program){ NULL, 0 };
             }
+            code = tmp;
         }
 
-        memcpy(code + codeBufSize, &buf, bytesRead);
-
+        memcpy(code + codeSize, buf, bytesRead);
         codeSize += bytesRead;
     }
 
-    return (struct Program){
-        code,
-        codeSize,
-    };
+    return (struct Program){ code, codeSize };
 }

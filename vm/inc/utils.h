@@ -45,6 +45,7 @@ typedef enum {
 
 
     DPRINT = 0xF0,
+    DCHAR = 0xF1,
 
 } Opcode;
 
