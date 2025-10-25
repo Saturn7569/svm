@@ -23,7 +23,7 @@ uint32_t VM_next(VM* vm) {
     }
 
     Opcode o = vm->code[vm->pc];
-    //printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
+    printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
     switch (o) {
         case NOP:
             vm->pc++;
@@ -153,6 +153,7 @@ uint32_t VM_next(VM* vm) {
             uint check = (uint)temp;
 
             if (check != 0) {
+                vm->pc += 5;
                 break;
             }
 
@@ -179,6 +180,7 @@ uint32_t VM_next(VM* vm) {
             uint check = (uint)temp;
 
             if (check == 0) {
+                vm->pc += 5;
                 break;
             }
 
@@ -208,6 +210,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
         case NEQ: {
             uint* ab = pop_ab(vm);
@@ -220,6 +225,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
         case LT: {
             uint* ab = pop_ab(vm);
@@ -232,6 +240,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
         case GT: {
             uint* ab = pop_ab(vm);
@@ -244,6 +255,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
         case LTE: {
             uint* ab = pop_ab(vm);
@@ -256,6 +270,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
         case GTE: {
             uint* ab = pop_ab(vm);
@@ -268,6 +285,9 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+
+            vm->pc++;
+            break;
         }
 
         case DPRINT: {
