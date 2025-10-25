@@ -4,21 +4,34 @@
 #include "stack.h"
 #include "vm.h"
 #include "utils.h"
+#include "fload.h"
 
-int main() {
+int main(int argc, char** argv) {
+    if (argc != 2) {
+        printf("Usage: %s <file>\n", argv[0]);
+        return 1;
+    }
+
+    FILE* f = fopen(argv[1], "r+");
+    if (!f) {
+        perror("Error while opening file");
+        return 1;
+    }
+
+    struct Program code = loadFile(f);
+    if (!code.code) {
+        printf("Error while loading file %s\n", argv[1]);
+        fclose(f);
+        return 1;
+    }
+
+    printf("Loaded code of size %d at %p\n", code.PROGRAM_SIZE, code.code);
+
+    fclose(f);
+
     VM vm;
-    uint8_t example[] = {
-        0x10, 0x05, 0x00, 0x00, 0x00, // ICONST 0x5
-        0xF0, // DPRINT
-        0x10, 0x43, 0x00, 0x00, 0x00, // ICONST 0x43 (6 7)
-        0xF0, // DPRINT
-        0x01, // POP
-        0xF0, // DPRINT
-        0x02,
-        0xF0, // DPRINT
-    };
 
-    VM_init(&vm, example, 16);
+    VM_init(&vm, code.code, code.PROGRAM_SIZE);
 
     while (vm.vmRunning > 0) {
         switch (VM_next(&vm)) {
