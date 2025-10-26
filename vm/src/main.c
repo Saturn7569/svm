@@ -25,11 +25,13 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    #ifdef OPT_DEBUG_INFO
     printf("Loaded code of size %o at %p\n", code.PROGRAM_SIZE, code.code);
     for (int i = 0; i < code.PROGRAM_SIZE; i++) {
         printf("%#x(%o) ", code.code[i], code.code[i]);
     }
     printf("\n");
+    #endif
 
     fclose(f);
 
