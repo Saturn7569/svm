@@ -1,6 +1,8 @@
 import sys
 
+from src.utils import CompileError
 from src.lex import tokenize
+from src.compiler import Compiler
 
 def main():
     if len(sys.argv) != 2:
@@ -21,7 +23,16 @@ def main():
         print(f"{sys.argv[1]}: {e}")
         return
 
-    toks = tokenize(code)
-    print(toks)
+    try:
+        print("Tokenizing...")
+        toks = tokenize(code)
+        print(toks)
+        print("Compiling...")
+        c = Compiler()
+        c.reset(toks)
+        c.compile()
+        print(c.res)
+    except CompileError as e:
+        print(e)
 
 if __name__ == "__main__": main()

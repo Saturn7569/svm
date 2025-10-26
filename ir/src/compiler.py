@@ -35,25 +35,40 @@ class Compiler:
         self.s_label.clear()
 
         while self.pos < len(self.toks):
-            t = self.next()
+            t = self.peek()
             if not t: raise CompileError("Unexpected EOF")
             t, v = t
+
+            #print(t, v, self.pos)
+            #print(self.s_label, self.labels)
+
             match t:
                 case "LABEL":
-                    if v in self.labels: raise CompileError(f"Cannot declare label '{v}' twice")
-                    self.labels[v] = len(self.res) - 1
+                    if v in self.labels: raise CompileError(f"Cannot declare label '{v}' twice (second definition at {self.pos})")
+                    self.labels[v] = len(self.res)
+                    self.next()
                 case "KEYWORD":
                     self.handle_keyword()
 
+        #print(self.res)
+
+        for l, p in self.s_label.items():
+            if l not in self.labels:
+                raise CompileError(f"Unknown label: '{l}'")
+            for pos in p:
+                print(self.res[pos:pos+5])
+                self.res[pos:pos+4] = list(self.labels[l].to_bytes(4, "little"))
+
     def handle_keyword(self):
-        t = self.peek()
+        t = self.next()
         t, v = t
+
+        print(t, v)
 
         global IR_REPR
 
         if v in IR_REPR:
             self.res.append(IR_REPR[v])
-            self.next()
             match v:
                 case "iconst":
                     self.expect(("NUM"))
