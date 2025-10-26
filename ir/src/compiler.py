@@ -56,14 +56,14 @@ class Compiler:
             if l not in self.labels:
                 raise CompileError(f"Unknown label: '{l}'")
             for pos in p:
-                print(self.res[pos:pos+5])
+                #print(self.res[pos:pos+5])
                 self.res[pos:pos+4] = list(self.labels[l].to_bytes(4, "little"))
 
     def handle_keyword(self):
         t = self.next()
         t, v = t
 
-        print(t, v)
+        #print(t, v)
 
         global IR_REPR
 
@@ -92,3 +92,6 @@ class Compiler:
                 case _: return
         else:
             raise CompileError(f"Unknown keyword: {v}")
+
+    def export(self) -> bytes:
+        return bytes(self.res)

@@ -1,4 +1,4 @@
-import sys
+import sys, os
 
 from src.utils import CompileError
 from src.lex import tokenize
@@ -26,13 +26,23 @@ def main():
     try:
         print("Tokenizing...")
         toks = tokenize(code)
-        print(toks)
+        #print(toks)
         print("Compiling...")
         c = Compiler()
         c.reset(toks)
         c.compile()
-        print(c.res)
+        #print(c.res)
+        res = c.export()
+        with open(f"{sys.argv[1]}.svm", 'wb') as f:
+            f.write(res)
     except CompileError as e:
         print(e)
+        return
+    except PermissionError:
+        print(f"{sys.argv[1]}.svm: Permission denied")
+        return
+    except Exception as e:
+        print(f"An error occured:\n{e}")
+        return
 
 if __name__ == "__main__": main()
