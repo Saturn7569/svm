@@ -27,12 +27,19 @@ uint VarSpace_extend(struct VarSpace* vs, size_t size) {
     return 0;
 }
 
+void VarSpace_destroy(struct VarSpace* vs) {
+    free(vs->vars);
+}
+
 uint32_t VM_init(VM* vm, uint8_t* program, size_t program_size) {
     if (Stack_init(&vm->stack, STACK_SIZE) != 0) {
-        return 1;
+        goto Stack_fail;
     }
     if (Stack_init(&vm->callStack, STACK_SIZE) != 0) {
-        return 1;
+        goto CallStack_fail;
+    }
+    if (VarSpace_init(&vm->vars, VARS_SIZE) != 0) {
+        goto VarSpace_fail;
     }
 
     vm->code = program;
@@ -43,6 +50,14 @@ uint32_t VM_init(VM* vm, uint8_t* program, size_t program_size) {
     vm->vmRunning = 1;
 
     return 0;
+
+    //VarSpace_destroy(&vm->vars);
+VarSpace_fail:
+    Stack_destroy(&vm->stack);
+CallStack_fail:
+    Stack_destroy(&vm->callStack);
+Stack_fail:
+    return 1;
 }
 
 uint32_t VM_next(VM* vm) {
@@ -89,6 +104,73 @@ uint32_t VM_next(VM* vm) {
                 vm->vmRunning = 0;
                 return ERR_OPCODE_EXEC;
             }
+            vm->pc++;
+            break;
+        }
+
+        case MVAR: {
+            if (VarSpace_extend(&vm->vars, 1) != 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            #ifdef DEBUG
+            printf("Allocated var space, new space size: %d\n", vm->vars.SPACE);
+            #endif
+
+            vm->pc++;
+            break;
+        }
+        case STORE: {
+            uint32_t addr = read_u32(vm);
+            if (vm->errorLevel > 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            if (addr >= vm->vars.SPACE) {
+                vm->vmRunning = 0;
+                return ERR_INVALID_SPACE;
+            }
+
+            uint val = pop_val(vm);
+            if (vm->errorLevel > 0) {
+                vm->vmRunning = 0;
+                return ERR_STACK_UNDERFLOW;
+            }
+
+            vm->vars.vars[addr] = val;
+
+            #ifdef DEBUG
+            printf("Stored value %d (%#x) to variable address %d (%#x)\n", val, val, addr, addr);
+            #endif
+
+            vm->pc++;
+            break;
+        }
+        case LOAD: {
+            uint32_t addr = read_u32(vm);
+            if (vm->errorLevel > 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            if (addr >= vm->vars.SPACE) {
+                vm->vmRunning = 0;
+                return ERR_INVALID_SPACE;
+            }
+
+            uint val = vm->vars.vars[addr];
+
+            if (Stack_push(&vm->stack, val) != 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            #ifdef DEBUG
+            printf("Loaded value from variable address %d (%#x) -> %d (%#x)", addr, addr, val, val);
+            #endif
+
             vm->pc++;
             break;
         }

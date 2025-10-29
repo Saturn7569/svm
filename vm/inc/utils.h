@@ -76,7 +76,7 @@ static uint32_t read_u32(VM* vm) {
     return val;
 }
 
-static uint32_t* pop_ab(VM* vm) {
+static uint* pop_ab(VM* vm) {
     static uint ab[2];
     long temp;
 
@@ -95,6 +95,16 @@ static uint32_t* pop_ab(VM* vm) {
     ab[0] = (uint)temp;
 
     return ab;
+}
+
+static uint pop_val(VM* vm) {
+    long temp = Stack_pop(&vm->stack);
+    if (temp < 0) {
+        vm->errorLevel = 1;
+        return 0;
+    }
+
+    return (uint)temp;
 }
 
 #endif
