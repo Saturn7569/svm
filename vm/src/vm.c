@@ -1,6 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "vm.h"
 #include "stack.h"
 #include "utils.h"
+
+uint VarSpace_init(struct VarSpace* vs, size_t size) {
+    vs->vars = (uint*)malloc(sizeof(uint) * size);
+    if (!vs->vars) {
+        return 1;
+    }
+
+    vs->SPACE = size;
+    return 0;
+}
+
+uint VarSpace_extend(struct VarSpace* vs, size_t size) {
+    size_t newSize = vs->SPACE + size;
+
+    vs->vars = (uint*)realloc(vs->vars, newSize);
+    if (!vs->vars) {
+        return 1;
+    }
+
+    vs->SPACE = newSize;
+    return 0;
+}
 
 uint32_t VM_init(VM* vm, uint8_t* program, size_t program_size) {
     if (Stack_init(&vm->stack, STACK_SIZE) != 0) {
