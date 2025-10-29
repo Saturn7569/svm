@@ -14,6 +14,14 @@
 #define ERR_INVALID_OPERANDS 3
 #define ERR_OPCODE_EXEC 4
 
+struct VarSpace {
+    size_t SPACE;
+    uint* vars;
+};
+
+uint VarSpace_init(struct VarSpace*, size_t);
+uint VarSpace_extend(struct VarSpace*, size_t);
+
 typedef struct {
     struct Stack stack;
     struct Stack callStack;
