@@ -59,6 +59,8 @@ class Compiler:
                 #print(self.res[pos:pos+5])
                 self.res[pos:pos+4] = list(self.labels[l].to_bytes(4, "little"))
 
+        print(f"Compiling finished (program size: {len(self.res)} bytes)")
+
     def handle_keyword(self):
         t = self.next()
         t, v = t

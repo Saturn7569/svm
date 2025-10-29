@@ -68,7 +68,7 @@ uint32_t VM_next(VM* vm) {
     Opcode o = vm->code[vm->pc];
 
     #ifdef DEBUG
-    printf("PC: %d\tO: %#x\tSP: %d\n", vm->pc, o, vm->stack.ptr);
+    printf("PC: %d\tO: %#x (%d)\tSP: %d\n", vm->pc, o, o, vm->stack.ptr);
     #endif
 
     // Yandere sim moment
@@ -168,7 +168,7 @@ uint32_t VM_next(VM* vm) {
             }
 
             #ifdef DEBUG
-            printf("Loaded value from variable address %d (%#x) -> %d (%#x)", addr, addr, val, val);
+            printf("Loaded value from variable address %d (%#x) -> %d (%#x)\n", addr, addr, val, val);
             #endif
 
             vm->pc++;
