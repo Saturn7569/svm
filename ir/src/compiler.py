@@ -70,7 +70,7 @@ class Compiler:
         if v in IR_REPR:
             self.res.append(IR_REPR[v])
             match v:
-                case "iconst":
+                case "iconst" | "store" | "load":
                     self.expect(("NUM"))
                     _, v = self.next()
                     self.res += list(v.to_bytes(4, "little"))
