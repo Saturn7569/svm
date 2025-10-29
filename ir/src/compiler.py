@@ -75,7 +75,7 @@ class Compiler:
                     _, v = self.next()
                     self.res += list(v.to_bytes(4, "little"))
                     return
-                case "jmp" | "jz" | "jnz":
+                case "jmp" | "jz" | "jnz" | "call":
                     self.expect({"NUM", "LABEL"})
                     t, v = self.next()
                     if t == "NUM":
