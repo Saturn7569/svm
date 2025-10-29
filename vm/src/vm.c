@@ -6,6 +6,9 @@ uint32_t VM_init(VM* vm, uint8_t* program, size_t program_size) {
     if (Stack_init(&vm->stack, STACK_SIZE) != 0) {
         return 1;
     }
+    if (Stack_init(&vm->callStack, STACK_SIZE) != 0) {
+        return 1;
+    }
 
     vm->code = program;
     vm->programSize = program_size;
@@ -190,6 +193,47 @@ uint32_t VM_next(VM* vm) {
             }
 
             uint val = read_u32(vm);
+            if (vm->errorLevel != 0) {
+                vm->vmRunning = 0;
+                return ERR_INVALID_OPERANDS;
+            }
+
+            if (val >= vm->programSize) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            vm->pc = val;
+            break;
+        }
+
+        case CALL: {
+            if (Stack_push(&vm->callStack, vm->pc + 4) != 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            uint val = read_u32(vm);
+            if (vm->errorLevel != 0) {
+                vm->vmRunning = 0;
+                return ERR_INVALID_OPERANDS;
+            }
+
+            if (val >= vm->programSize) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+
+            vm->pc = val;
+            break;
+        }
+        case RET: {
+            long temp = Stack_pop(&vm->callStack);
+            if (temp < 0) {
+                vm->vmRunning = 0;
+                return ERR_OPCODE_EXEC;
+            }
+            uint val = (uint)temp;
             if (vm->errorLevel != 0) {
                 vm->vmRunning = 0;
                 return ERR_INVALID_OPERANDS;

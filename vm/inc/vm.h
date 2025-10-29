@@ -16,6 +16,7 @@
 
 typedef struct {
     struct Stack stack;
+    struct Stack callStack;
 
     uint8_t* code;
     size_t programSize;
