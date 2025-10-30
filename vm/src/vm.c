@@ -256,6 +256,9 @@ uint32_t VM_next(VM* vm) {
                 return ERR_OPCODE_EXEC;
             }
 
+            #ifdef DEBUG
+            printf("Jumping from %#x (%d) to %#x (%d)\n", vm->pc, vm->pc, val, val);
+            #endif
             vm->pc = val;
             break;
         }
@@ -283,6 +286,9 @@ uint32_t VM_next(VM* vm) {
                 return ERR_OPCODE_EXEC;
             }
 
+            #ifdef DEBUG
+            printf("Jumping from %#x (%d) to %#x (%d)\n", vm->pc, vm->pc, val, val);
+            #endif
             vm->pc = val;
             break;
         }
@@ -310,6 +316,9 @@ uint32_t VM_next(VM* vm) {
                 return ERR_OPCODE_EXEC;
             }
 
+            #ifdef DEBUG
+            printf("Jumping from %#x (%d) to %#x (%d)\n", vm->pc, vm->pc, val, val);
+            #endif
             vm->pc = val;
             break;
         }
@@ -331,6 +340,9 @@ uint32_t VM_next(VM* vm) {
                 return ERR_OPCODE_EXEC;
             }
 
+            #ifdef DEBUG
+            printf("Jumping from %#x (%d) to %#x (%d)\n", vm->pc, vm->pc, val, val);
+            #endif
             vm->pc = val;
             break;
         }
@@ -351,6 +363,9 @@ uint32_t VM_next(VM* vm) {
                 return ERR_OPCODE_EXEC;
             }
 
+            #ifdef DEBUG
+            printf("Returning from %#x (%d) to %#x (%d)\n", vm->pc, vm->pc, val, val);
+            #endif
             vm->pc = val;
             break;
         }

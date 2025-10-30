@@ -21,7 +21,7 @@
 0x40 -> JMP <addr (4 bytes little-endian)>
 0x41 -> JZ <addr (4 bytes little-endian)>
 0x42 -> JNZ <addr (4 bytes little-endian)>
-0x43 -> CALL <addr (4 bytes little-endian)> (<n_args (2 bytes little-endian)>)
+0x43 -> CALL <addr (4 bytes little-endian)>
 0x44 -> RET
 
 0x50 -> EQ
