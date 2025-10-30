@@ -1,0 +1,62 @@
+;;;;;;;;;;;;;
+;           ;
+; Fibonacci ;
+;           ;
+;;;;;;;;;;;;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; This script calculates the 10th fibonacci number and prints it.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+ICONST 10
+CALL ::fib
+
+DPRINT
+
+HLT
+
+::fib
+    DUP
+    ICONST 1
+    LTE
+    JZ ::fib_end
+
+    STORE 0x3
+
+    ; prev = 0x0
+    ; curr = 0x1
+    ; counter = 0x2
+    ; n = 0x3
+
+    ICONST 0
+    STORE 0x0
+    ICONST 1
+    STORE 0x1
+
+    ICONST 2
+    STORE 0x2
+
+    ::fib_loop
+        LOAD 0x2
+        LOAD 0x3
+        LTE
+
+        JNZ ::fib_end_loop
+
+        LOAD 0x0
+        LOAD 0x1
+        ADD
+        LOAD 0x1
+        STORE 0x0
+        STORE 0x1
+
+        LOAD 0x2
+        ICONST 1
+        ADD
+        STORE 0x2
+        JMP ::fib_loop
+
+    ::fib_end_loop
+        LOAD 0x1
+    ::fib_end
+        RET
