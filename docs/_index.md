@@ -1,4 +1,4 @@
-# SVM DOCS
+# SVM documentation
 
 Welcome to the svm documentation. It is currently very minimal and does not include much content. To be extended in the future.
 
