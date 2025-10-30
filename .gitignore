@@ -1,6 +1,5 @@
 # Test files
 *.svm
-*.sir
 *.bin
 
 # Build files

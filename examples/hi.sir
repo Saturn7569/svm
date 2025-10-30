@@ -1,0 +1,17 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;                         ;
+; Print hi to the console ;
+;                         ;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+ICONST 'h'
+DCHAR
+
+ICONST 'i'
+DCHAR
+
+; Print a newline and halt
+ICONST 0x0a
+DCHAR
+
+HLT

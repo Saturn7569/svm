@@ -1,6 +1,6 @@
 debug:
 	gcc -c src/*.c -I inc -DDEBUG
-	gcc -o svm *.o
+	gcc -o svm-debug *.o
 
 release:
 	gcc -c src/*.c -I inc
