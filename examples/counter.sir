@@ -1,0 +1,25 @@
+;;;;;;;;;;;;;;;
+;             ;
+; Count to 10 ;
+;             ;
+;;;;;;;;;;;;;;;
+
+; Create the counter
+ICONST 0
+
+::loop
+    ; Add 1 to the counter
+    ICONST 1
+    ADD
+
+    DPRINT
+
+    ; Check the value
+    DUP
+    ICONST 10
+    EQ
+
+    ; Continue looping if the value is not 10
+    JNZ ::loop
+
+HLT
