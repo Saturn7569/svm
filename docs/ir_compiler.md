@@ -73,3 +73,18 @@ JNZ ::loop
 
 HLT
 ```
+
+### Macros
+
+Macros are so far very minimal, they can only store integers that will be autofilled during compile-time.
+
+Here is an example with macros:
+
+```sir
+; Define a macro
+#define count 10
+
+; Push the number
+ICONST @count ; The macro will expand to the number 10
+DPRINT ; Will print 10
+```
