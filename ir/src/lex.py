@@ -1,5 +1,7 @@
 import re
 
+from src.utils import CompileError
+
 KEYWORDS = {
     "nop", "pop", "dup",
     "iconst",
@@ -12,8 +14,12 @@ KEYWORDS = {
     "dprint", "dchar",
 }
 
+MACRO_KEYWORDS = {
+    "define",
+}
+
 def tokenize(code: str):
-    global KEYWORDS
+    global KEYWORDS, MACRO_KEYWORDS
     tokens = []
     for line in code.splitlines():
         line = line.split(';', 1)[0].strip()
@@ -32,8 +38,13 @@ def tokenize(code: str):
                 tokens.append(("NUM", ord(part[1])))
             elif part.isdigit():
                 tokens.append(("NUM", int(part)))
+            elif part.startswith("@"):
+                tokens.append(("MACRO", part[1:]))
             elif part.lower() in KEYWORDS:
                 tokens.append(("KEYWORD", part.lower()))
+            elif part.startswith("#"):
+                if part[1:].lower() in MACRO_KEYWORDS: tokens.append(("KEYWORD_MACRO", part[1:].lower()))
+                else: raise CompileError(f"Unknown macro function {part.lower()}")
             else:
                 tokens.append(("EXPR", part))
     return tokens

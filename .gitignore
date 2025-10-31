@@ -1,6 +1,7 @@
 # Test files
 *.svm
 *.bin
+/test
 
 # Build files
 *.exe
