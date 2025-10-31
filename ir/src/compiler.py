@@ -49,6 +49,8 @@ class Compiler:
                     self.next()
                 case "KEYWORD":
                     self.handle_keyword()
+                case _:
+                    raise CompileError(f"Unknown token {t} {v}")
 
         #print(self.res)
 
