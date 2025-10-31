@@ -51,7 +51,7 @@ class Compiler:
     def parse_token(self):
         t, v = self.peek()
 
-        print(f"[D:{self.pos}]: {t}({v}), labels:{self.labels}, insert:{self.labels}, macros:{self.macros}")
+        #print(f"[D:{self.pos}]: {t}({v}), labels:{self.labels}, insert:{self.labels}, macros:{self.macros}")
 
         match t:
             case "LABEL":

@@ -8,7 +8,9 @@
 ; This script calculates the 10th fibonacci number and prints it.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-ICONST 10
+#define fib_num 10 ; nth fibonacci number
+
+ICONST @fib_num
 CALL ::fib
 
 DPRINT
@@ -16,47 +18,51 @@ DPRINT
 HLT
 
 ::fib
+    ; prev = 0x0
+    ; curr = 0x1
+    ; counter = 0x2
+    ; n = 0x3
+    #define prev 0x0
+    #define curr 0x1
+    #define counter 0x2
+    #define n 0x3
+
     DUP
     ICONST 1
     LTE
     JZ ::fib_end
 
-    STORE 0x3
-
-    ; prev = 0x0
-    ; curr = 0x1
-    ; counter = 0x2
-    ; n = 0x3
+    STORE @n
 
     ICONST 0
-    STORE 0x0
+    STORE @prev
     ICONST 1
-    STORE 0x1
+    STORE @curr
 
     ICONST 2
-    STORE 0x2
+    STORE @counter
 
     ::fib_loop
-        LOAD 0x2
-        LOAD 0x3
+        LOAD @counter
+        LOAD @n
         LTE
 
         JNZ ::fib_end_loop
 
-        LOAD 0x0
-        LOAD 0x1
+        LOAD @prev
+        LOAD @curr
         ADD
-        LOAD 0x1
-        STORE 0x0
-        STORE 0x1
+        LOAD @curr
+        STORE @prev
+        STORE @curr
 
-        LOAD 0x2
+        LOAD @counter
         ICONST 1
         ADD
-        STORE 0x2
+        STORE @counter
         JMP ::fib_loop
 
     ::fib_end_loop
-        LOAD 0x1
+        LOAD @curr
     ::fib_end
         RET
