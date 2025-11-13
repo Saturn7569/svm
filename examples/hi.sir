@@ -4,6 +4,7 @@
 ;                         ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;Character can be loaded using ICONST when closed in single quotation marks
 ICONST 'h'
 DCHAR
 
