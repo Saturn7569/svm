@@ -14,20 +14,45 @@
 typedef enum {
 
     NOP = 0x00,
-    POP = 0x01,
-    DUP = 0x02,
 
-    ICONST = 0x10,
+    POPB = 0x01,
+    POPW = 0x02,
+    POPD = 0x03,
+    POPQ = 0x04,
+    DUPB = 0x01,
+    DUPW = 0x02,
+    DUPD = 0x03,
+    DUPQ = 0x04,
+
+
+    BCONST = 0x10,
+    WCONST = 0x11,
+    DCONST = 0x12,
+    QCONST = 0x13,
+
 
     MVAR = 0x20,
     STORE = 0x21,
     LOAD = 0x22,
 
-    ADD = 0x30,
-    SUB = 0x31,
-    MUL = 0x32,
-    DIV = 0x33,
+
+    BADD = 0x30,
+    WADD = 0x31,
+    DADD = 0x32,
+    QADD = 0x33,
+
+    BSUB = 0x34,
+    WSUB = 0x35,
+    DSUB = 0x36,
+    QSUB = 0x37,
+
+    BMUL = 0x38,
+    WMUL = 0x39,
+    DMUL = 0x3A,
+    QMUL = 0x3B,
+
     MOD = 0x34,
+
 
     JMP = 0x40,
     JZ = 0x41,
@@ -35,20 +60,56 @@ typedef enum {
     CALL = 0x43,
     RET = 0x44,
 
-    EQ = 0x50,
-    NEQ = 0x51,
-    LT = 0x52,
-    GT = 0x53,
-    GTE = 0x54,
-    LTE = 0x55,
 
-    HLT = 0x60,
+    BEQ = 0x50,
+    WEQ = 0x51,
+    DEQ = 0x52,
+    QEQ = 0x53,
+
+    BNEQ = 0x54,
+    WNEQ = 0x55,
+    DNEQ = 0x56,
+    QNEQ = 0x57,
+
+    BLT = 0x58,
+    WLT = 0x59,
+    DLT = 0x5A,
+    QLT = 0x5B,
+
+    BGT = 0x5C,
+    WGT = 0x5D,
+    DGT = 0x5E,
+    QGT = 0x5F,
+
+    BGTE = 0x60,
+    WGTE = 0x61,
+    DGTE = 0x62,
+    QGTE = 0x63,
+
+    BLTE = 0x64,
+    WLTE = 0x65,
+    DLTE = 0x66,
+    QLTE = 0x67,
+
+
+    HLT = 0x70,
 
 
     DPRINT = 0xF0,
-    DCHAR = 0xF1,
+    DCHAR = 0xF1
 
 } Opcode;
+
+static uint8_t read_u8(VM* vm) {
+    if (vm->programSize - vm->pc < 1) {
+        vm->errorLevel = 1;
+        return 0;
+    }
+
+    uint8_t val = vm->code[vm->pc + 1];
+
+    return val;
+}
 
 static uint16_t read_u16(VM* vm) {
     if (vm->programSize - vm->pc < 2) {
