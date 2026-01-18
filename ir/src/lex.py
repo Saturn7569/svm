@@ -16,6 +16,7 @@ KEYWORDS = {
 
 MACRO_KEYWORDS = {
     "define",
+    "func", "end", "call",
 }
 
 def tokenize(code: str):
@@ -47,4 +48,5 @@ def tokenize(code: str):
                 else: raise CompileError(f"Unknown macro function {part.lower()}")
             else:
                 tokens.append(("EXPR", part))
+    print(tokens)
     return tokens

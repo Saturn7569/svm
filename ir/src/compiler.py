@@ -10,6 +10,9 @@ class Compiler:
         self.s_label = {}
         self.macros = {} # dict[str, int]
 
+        self.funcs = {} # dict[str, list[int]]
+        self.func = None
+
     def reset(self, toks:list[tuple]):
         self.res.clear()
         self.labels.clear()
@@ -46,6 +49,8 @@ class Compiler:
                 #print(self.res[pos:pos+5])
                 self.res[pos:pos+4] = list(self.labels[l].to_bytes(4, "little"))
 
+        if self.func: raise CompileError(f"Unclosed function {self.func}")
+
         print(f"Compiling finished (program size: {len(self.res)} bytes)")
 
     def parse_token(self):
@@ -55,6 +60,7 @@ class Compiler:
 
         match t:
             case "LABEL":
+                if self.func: raise CompileError("Cannot define label inside a function")
                 if v in self.labels: raise CompileError(f"Cannot declare label '{v}' twice (second definition at {self.pos})")
                 self.labels[v] = len(self.res)
                 self.next()
@@ -74,7 +80,21 @@ class Compiler:
                 if name in self.macros: raise CompileError(f"Macro {name} defined twice")
                 val = self.get_number()
                 self.macros[name] = val
-                return
+            case "func":
+                self.expect(("EXPR"))
+                _, name = self.next()
+                if name in self.funcs: raise CompileError(f"Function {name} defined twice")
+                if self.func: raise CompileError(f"Definining nested functions isn't supported. Currently defining {self.func}")
+                self.func = name
+                self.funcs[name] = list()
+            case "end":
+                if self.func: self.func = None
+                else: raise CompileError(f"Undefined function")
+            case "call":
+                self.expect(("EXPR"))
+                _, name = self.next()
+                if name not in self.funcs: raise CompileError(f"Function {name} is not defined")
+                self.add_res(self.funcs[name])
             case _: raise CompileError(f"Unknown macro function {v}")
 
     def resolve_macro(self, m:str) -> int:
@@ -87,6 +107,12 @@ class Compiler:
         if t == "NUM": return v
         return self.resolve_macro(v)
 
+    def add_res(self, stuff):
+        if self.func:
+            self.funcs[self.func] += list(stuff)
+        else:
+            self.res += list(stuff)
+
     def handle_keyword(self):
         t, v = self.next()
 
@@ -95,11 +121,11 @@ class Compiler:
         global IR_REPR
 
         if v in IR_REPR:
-            self.res.append(IR_REPR[v])
+            self.add_res((IR_REPR[v],))
             match v:
                 case "iconst" | "store" | "load":
                     v = self.get_number()
-                    self.res += list(v.to_bytes(4, "little"))
+                    self.add_res(v.to_bytes(4, "little"))
                     return
                 case "jmp" | "jz" | "jnz" | "call":
                     self.expect({"NUM", "LABEL"})

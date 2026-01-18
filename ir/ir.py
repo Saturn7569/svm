@@ -41,8 +41,8 @@ def main():
     except PermissionError:
         print(f"{sys.argv[1]}.svm: Permission denied")
         return
-    except Exception as e:
-        print(f"An error occured:\n{e}")
-        return
+    #except Exception as e:
+    #    print(f"An error occured:\n{e}")
+    #    return
 
 if __name__ == "__main__": main()
