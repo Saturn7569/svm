@@ -137,6 +137,20 @@ static uint32_t read_u32(VM* vm) {
     return val;
 }
 
+static uint64_t read_u32(VM* vm) {
+    if (vm->programSize - vm->pc < 8) {
+        vm->errorLevel = 1;
+        return 0;
+    }
+
+    uint64_t val = vm->code[vm->pc + 1] | (vm->code[vm->pc + 2] << 8) | (vm->code[vm->pc + 3] << 16) | (vm->code[vm->pc + 4] << 24) |
+                   (vm->code[vm->pc + 5] << 32) | (vm->code[vm->pc + 6] << 40) | (vm->code[vm->pc + 7] << 48) | (vm->code[vm->pc + 8] << 56);
+
+    vm->pc += 4;
+
+    return val;
+}
+
 static uint* pop_ab(VM* vm) {
     static uint ab[2];
     long temp;
