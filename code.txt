@@ -2,36 +2,93 @@
 
 == Opcodes ==
 
-0x00 -> NOP
-0x01 -> POP
-0x02 -> DUP
+#############################################
+# ALL ARGUMENTS ARE STORED IN LITTLE ENDIAN #
+#############################################
 
-0x10 -> ICONST <val (4 bytes little-endian)>
+0x00 -> NOP
+
+0x01 -> POPB
+0x02 -> POPW
+0x03 -> POPD
+0x04 -> POPQ
+0x01 -> DUPB
+0x02 -> DUPW
+0x03 -> DUPD
+0x04 -> DUPQ
+
+
+0x10 -> BCONST <val (1 byte)>
+0x11 -> WCONST <val (2 bytes)>
+0x12 -> DCONST <val (4 bytes)>
+0x13 -> QCONST <val (8 bytes)>
+
 
 0x20 -> MVAR
-0x21 -> STORE <addr (4 bytes little-endian)>
-0x22 -> LOAD <addr (4 bytes little-endian)>
+0x21 -> STORE <addr (4 bytes)>
+0x22 -> LOAD <addr (4 bytes)>
 
-0x30 -> ADD
-0x31 -> SUB
-0x32 -> MUL
-0x33 -> DIV
+
+0x30 -> BADD
+0x31 -> WADD
+0x32 -> DADD
+0x33 -> QADD
+
+0x34 -> BSUB
+0x35 -> WSUB
+0x36 -> DSUB
+0x37 -> QSUB
+
+0x38 -> BMUL
+0x39 -> WMUL
+0x3A -> DMUL
+0x3B -> QMUL
+
+#0x33 -> DIV
+
 0x34 -> MOD
 
-0x40 -> JMP <addr (4 bytes little-endian)>
-0x41 -> JZ <addr (4 bytes little-endian)>
-0x42 -> JNZ <addr (4 bytes little-endian)>
-0x43 -> CALL <addr (4 bytes little-endian)>
+
+0x40 -> JMP <addr (4 bytes)>
+0x41 -> JZ <addr (4 bytes)>
+0x42 -> JNZ <addr (4 bytes)>
+0x43 -> CALL <addr (4 bytes)>
 0x44 -> RET
 
-0x50 -> EQ
-0x51 -> NEQ
-0x52 -> LT
-0x53 -> GT
-0x54 -> GTE
-0x55 -> LTE
 
-0x60 -> HLT
+0x50 -> BEQ
+0x51 -> WEQ
+0x52 -> DEQ
+0x53 -> QEQ
+
+0x54 -> BNEQ
+0x55 -> WNEQ
+0x56 -> DNEQ
+0x57 -> QNEQ
+
+0x58 -> BLT
+0x59 -> WLT
+0x5A -> DLT
+0x5B -> QLT
+
+0x5C -> BGT
+0x5D -> WGT
+0x5E -> DGT
+0x5F -> QGT
+
+0x60 -> BGTE
+0x61 -> WGTE
+0x62 -> DGTE
+0x63 -> QGTE
+
+0x64 -> BLTE
+0x65 -> WLTE
+0x66 -> DLTE
+0x67 -> QLTE
+
+
+0x70 -> HLT
+
 
 0xF0 -> DPRINT
 0xF1 -> DCHAR
