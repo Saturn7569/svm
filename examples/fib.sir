@@ -65,4 +65,5 @@ HLT
     ::fib_end_loop
         LOAD @curr
     ::fib_end
+    ;RET is also used when the code below the label is not wanted for execution
         RET
