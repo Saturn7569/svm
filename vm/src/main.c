@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#include "stack.h"
-#include "vm.h"
-#include "utils.h"
-#include "fload.h"
-
 int main(int argc, char** argv) {
+    return 0;
+}
+
+/*
+int main_old(int argc, char** argv) {
     if (argc != 2) {
         printf("Usage: %s <file>\n", argv[0]);
         return 1;
@@ -63,3 +63,4 @@ int main(int argc, char** argv) {
 
     return 0;
 }
+*/
