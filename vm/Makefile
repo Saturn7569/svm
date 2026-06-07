@@ -1,3 +1,5 @@
+all: debug release
+
 debug:
 	gcc -c src/*.c -I inc -DDEBUG
 	gcc -o svm-debug *.o
